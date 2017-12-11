@@ -5,25 +5,23 @@ import App from "../src/App"
 describe("App", () => {
   const searchMock = jest.fn()
   const fakeClient = {search: searchMock}
+  const localStorage = new FakeLocalStorage()
+
   let app
+
+  beforeEach(() => {
+    app = mount(<App client={fakeClient} storage={localStorage}/>)
+  })
 
   describe("searching", () => {
     describe("when results are returned", () => {
       beforeEach(() => {
         searchMock.mockReturnValue(
           Promise.resolve([
-            {
-              name: "rails",
-              info: "rails description"
-            },
-            {
-              name: "rails-2.0",
-              info: "a better rails description"
-            }
+            {name: "rails", info: "rails description"},
+            {name: "rails-2.0", info: "a better rails description"}
           ])
         )
-
-        app = mount(<App client={fakeClient}/>)
       })
 
       it("displays the results", (done) => {
@@ -40,8 +38,6 @@ describe("App", () => {
         searchMock.mockReturnValue(
           Promise.resolve([])
         )
-
-        app = mount(<App client={fakeClient}/>)
       })
 
       it("displays an empty state", (done) => {
@@ -54,19 +50,89 @@ describe("App", () => {
         })
       })
     })
+  })
 
-    function searchResults() {
-      app.update()
-      return app.find("[data-test=\"search-result\"]")
-    }
-
-    function whenSearchTermIsEntered(searchTerm) {
-      app.find("[type=\"text\"]").simulate("change", {target: {value: searchTerm}})
-      app.find("form").simulate("submit")
-    }
-
-    afterEach(() => {
-      searchMock.mockClear()
+  describe("when there are no favorites", () => {
+    it("displays empty state", () => {
+      expect(app.find("Favorite").length).toEqual(0)
+      expect(app.find("[data-test=\"favorites\"]").text()).toEqual("No favorites yet")
     })
+  })
+
+  describe("favorites", () => {
+    const rails = {name: "rails", info: "rails description"}
+    const rspec = {name: "rspec-core", info: "rspec description"}
+
+    describe("adding favorites", () => {
+      beforeEach(() => {
+        app.instance().addFavorite(rails)
+        app.instance().addFavorite(rspec)
+      })
+
+      it("adds them to favorites", () => {
+        expect(app.state().favorites).toEqual([rails, rspec])
+      })
+
+      it("puts all favorites into localStorage", () => {
+        expect(localStorage.getItem("favorites")).toEqual(JSON.stringify([rails, rspec]))
+      })
+
+      it("displays all favorites", () => {
+        app.update()
+        expect(app.find("Favorite").length).toEqual(2)
+      })
+
+      describe("adding duplicate favorites", () => {
+        beforeEach(() => {
+          app.instance().addFavorite(rails)
+        })
+
+        it("ignores duplicates", () => {
+          expect(app.state().favorites).toEqual([rails, rspec])
+        })
+
+        it("puts correct favorites into localStorage", () => {
+          expect(localStorage.getItem("favorites")).toEqual(JSON.stringify([rails, rspec]))
+        })
+      })
+
+      describe("removing favorites", () => {
+        beforeEach(() => {
+          app.instance().removeFavorite(rails)
+        })
+
+        it("returns all the favorites", () => {
+          expect(app.state().favorites).toEqual([rspec])
+        })
+
+        it("puts all favorites into localStorage", () => {
+          expect(localStorage.getItem("favorites")).toEqual(JSON.stringify([rspec]))
+        })
+      })
+    })
+  })
+
+  function FakeLocalStorage () {
+    const storage = {}
+
+    this.setItem = (key, value) => {
+      storage[key] = value.toString()
+    }
+
+    this.getItem = (key) => storage[key]
+  }
+
+  function searchResults() {
+    app.update()
+    return app.find("SearchResult")
+  }
+
+  function whenSearchTermIsEntered(searchTerm) {
+    app.find("[type=\"text\"]").simulate("change", {target: {value: searchTerm}})
+    app.find("form").simulate("submit")
+  }
+
+  afterEach(() => {
+    searchMock.mockClear()
   })
 })
