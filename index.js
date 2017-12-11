@@ -1,10 +1,12 @@
 const request = require('request');
 const express = require('express');
 const app = express();
+const path = require('path')
 
 const RUBY_GEMS_URL = 'https://rubygems.org';
-const PORT = 3000;
+const PORT = process.env.PORT || 3000
 
+app.use(express.static(path.join(__dirname, 'public')))
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
