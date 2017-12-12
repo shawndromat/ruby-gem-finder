@@ -26,13 +26,14 @@ describe("RubyGemsClient", () => {
           {
             name: "rails",
             info: "Rails Gem Description",
-            project_uri: "uri"
+            project_uri: "uri",
+            version_downloads: 12345
           }
         ]
       )
     })
 
-    it("returns the search results", () => {
+    it("returns a trimmed down version of the search results", () => {
       return searcher.search("rails").then(results => {
         expect(results).toEqual(
           [
