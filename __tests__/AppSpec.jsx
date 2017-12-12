@@ -13,6 +13,10 @@ describe("App", () => {
     app = mount(<App client={fakeClient} storage={localStorage}/>)
   })
 
+  it("displays a welcome message", () => {
+    expect(app.text()).toEqual(expect.stringContaining("Search for your favorite gem"))
+  })
+
   describe("searching", () => {
     describe("when results are returned", () => {
       beforeEach(() => {
@@ -28,6 +32,15 @@ describe("App", () => {
         whenSearchTermIsEntered("rails")
         setImmediate(() => {
           expect(searchResults().length).toEqual(2)
+          done()
+        })
+      })
+
+      it("shows loading text while searching", (done) => {
+        whenSearchTermIsEntered("rails")
+        expect(app.text()).toEqual(expect.stringContaining("loading..."))
+        setImmediate(() => {
+          expect(app.text()).not.toEqual(expect.stringContaining("loading..."))
           done()
         })
       })

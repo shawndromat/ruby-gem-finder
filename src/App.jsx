@@ -10,7 +10,8 @@ export default class App extends Component {
     this.state = {
       query: "",
       searchResults: [],
-      favorites: []
+      favorites: [],
+      searchMessage: "Search for your favorite gem"
     }
   }
 
@@ -35,8 +36,16 @@ export default class App extends Component {
 
   search = (e) => {
     e.preventDefault()
+    this.setState({searchMessage: "loading...", searchResults: []})
+
     this.props.client.search(this.state.query).then(searchResults => {
-      this.setState({searchResults})
+      this.setState({loading: false})
+
+      if (searchResults.length > 0) {
+        this.setState({searchResults, searchMessage: ""})
+      } else {
+        this.setState({searchMessage: "No results found"})
+      }
     })
   }
 
@@ -49,8 +58,6 @@ export default class App extends Component {
       return this.state.searchResults.map((result, index) =>
         <SearchResult result={result} addToFavorites={this.addFavorite} key={index}/>
       )
-    } else {
-      return "No results found"
     }
   }
 
@@ -74,6 +81,7 @@ export default class App extends Component {
             <input type="submit"/>
           </form>
           <div data-test="results">
+            {this.state.searchMessage}
             {this.renderResults()}
           </div>
         </div>
