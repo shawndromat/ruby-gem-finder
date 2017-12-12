@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 
 export default class SearchResult extends Component {
-  handleFavorite = (e) => {
-    e.preventDefault()
+  handleFavorite = () => {
     this.props.addToFavorites(this.props.result)
   }
 
