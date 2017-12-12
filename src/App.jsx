@@ -21,21 +21,20 @@ export default class App extends Component {
 
   addFavorite = (gem) => {
     if (this.alreadyFavorited(gem)) return
-    this.setState({favorites: [...this.state.favorites, gem]})
-    this.save()
+    this.save([...this.state.favorites, gem])
   }
 
   removeFavorite = (fav) => {
-    this.setState({favorites: reject(this.state.favorites, fav)})
-    this.save()
+    this.save(reject(this.state.favorites, fav))
   }
 
   alreadyFavorited = (gem) => {
     return !!find(this.state.favorites, favorite => isEqual(gem, favorite))
   }
 
-  save = () => {
-    this.props.storage.setItem("favorites", JSON.stringify(this.state.favorites))
+  save = (favorites) => {
+    this.props.storage.setItem("favorites", JSON.stringify(favorites))
+    this.setState({favorites})
   }
 
   search = (e) => {
