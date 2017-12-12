@@ -23,7 +23,7 @@ describe("SearchResult", () => {
   describe("favoriting", () => {
     it("adds the favorite to storage", () => {
       searchResult.find("button").simulate("click")
-      expect(addToFavorites).toHaveBeenCalled()
+      expect(addToFavorites).toHaveBeenCalledWith(result)
     })
   })
 })
