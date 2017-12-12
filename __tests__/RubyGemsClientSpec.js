@@ -25,7 +25,8 @@ describe("RubyGemsClient", () => {
         [
           {
             name: "rails",
-            info: "Rails Gem Description"
+            info: "Rails Gem Description",
+            project_uri: "uri"
           }
         ]
       )
@@ -37,7 +38,8 @@ describe("RubyGemsClient", () => {
           [
             {
               name: "rails",
-              info: "Rails Gem Description"
+              info: "Rails Gem Description",
+              project_uri: "uri"
             }
           ]
         )

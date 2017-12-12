@@ -5,7 +5,8 @@ import SearchResult from "../src/SearchResult"
 describe("SearchResult", () => {
   const result = {
     name: "rails",
-    info: "rails description"
+    info: "rails description",
+    project_uri: "uri"
   }
   let addToFavorites
   let searchResult
@@ -18,6 +19,7 @@ describe("SearchResult", () => {
   it("renders the result", () => {
     expect(searchResult.find("[data-test=\"name\"]").text()).toEqual("rails")
     expect(searchResult.find("[data-test=\"info\"]").text()).toEqual("rails description")
+    expect(searchResult.find("a").prop("href")).toEqual("uri")
   })
 
   describe("favoriting", () => {
