@@ -76,6 +76,18 @@ describe("App", () => {
     const rails = {name: "rails", info: "rails description"}
     const rspec = {name: "rspec-core", info: "rspec description"}
 
+    describe("when storage has favorites on initialize", () => {
+      beforeEach(() => {
+        localStorage.setItem("favorites", JSON.stringify([rails, rspec]))
+        app = mount(<App client={fakeClient} storage={localStorage}/>)
+      })
+
+      it("displays all favorites", () => {
+        app.update()
+        expect(app.find("Favorite").length).toEqual(2)
+      })
+    })
+
     describe("adding favorites", () => {
       beforeEach(() => {
         app.instance().addFavorite(rails)
