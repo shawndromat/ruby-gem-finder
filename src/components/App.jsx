@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import SearchResult from "./SearchResult"
 import Favorite from "./Favorite"
 import { reject, isEqual, find } from "lodash"
-import "./styles/styles.css"
+import "../styles/styles.css"
 
 
 export default class App extends Component {
@@ -74,17 +74,17 @@ export default class App extends Component {
     }
   }
 
-  render = () => {
-    return <div>
+  render = () => (
+    <div>
       <h1>Ruby Gem Finder</h1>
       <div className="row">
         <div className="col">
           <form onSubmit={this.search}>
             <div className="input-group">
               <input type="text" className="form-control"
-                value={this.state.query}
-                onChange={this.handleChange}
-                />
+                     value={this.state.query}
+                     onChange={this.handleChange}
+              />
               <input type="submit" className="input-group-addon"/>
             </div>
           </form>
@@ -101,5 +101,5 @@ export default class App extends Component {
         </div>
       </div>
     </div>
-  }
+  )
 }

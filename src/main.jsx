@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'react-dom'
-import App from './App'
+import App from './components/App'
 import RubyGemsClient from "./RubyGemsClient"
 
 const client = new RubyGemsClient("http://localhost:3000")

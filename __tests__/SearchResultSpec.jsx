@@ -1,6 +1,6 @@
 import React from "react"
 import {mount} from "enzyme"
-import SearchResult from "../src/SearchResult"
+import SearchResult from "../src/components/SearchResult"
 
 describe("SearchResult", () => {
   const result = {

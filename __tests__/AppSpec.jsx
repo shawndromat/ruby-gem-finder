@@ -1,6 +1,6 @@
 import React from "react"
 import {mount} from "enzyme"
-import App from "../src/App"
+import App from "../src/components/App"
 
 describe("App", () => {
   const searchMock = jest.fn()

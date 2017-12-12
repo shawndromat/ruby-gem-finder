@@ -1,6 +1,6 @@
 import React from "react"
 import {shallow} from "enzyme"
-import Favorite from "../src/Favorite"
+import Favorite from "../src/components/Favorite"
 
 describe("Favorite", () => {
   const fav = {name: "rails"}
