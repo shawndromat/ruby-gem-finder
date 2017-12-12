@@ -57,7 +57,7 @@ export default class App extends Component {
   renderFavorites = () => {
     if (this.state.favorites.length > 0) {
       return this.state.favorites.map((favorite, index) =>
-        <Favorite favorite={favorite} key={index}/>
+        <Favorite favorite={favorite} removeFromFavorites={this.removeFavorite} key={index}/>
       )
     } else {
       return "No favorites yet"
