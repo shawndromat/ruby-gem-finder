@@ -8,8 +8,10 @@ export default class Favorite extends Component {
   render = () => {
     const { favorite } = this.props
     return <div>
-      <h3 data-test="name">{favorite.name}</h3>
-      <button onClick={this.handleFavorite}>Remove</button>
+      <h5 data-test="name" className="gemName">{favorite.name}</h5>
+      <button type="button" className="close" aria-label="Close" onClick={this.handleFavorite}>
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
   }
 }

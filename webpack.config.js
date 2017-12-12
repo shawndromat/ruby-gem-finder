@@ -7,7 +7,7 @@ const DIST = "public"
 const SOURCE = "src"
 
 module.exports = {
-  entry: [ 'raf', 'babel-polyfill', path.resolve(__dirname, SOURCE, "main.jsx")],
+  entry: ['raf', 'babel-polyfill', path.resolve(__dirname, SOURCE, "main.jsx")],
   output: {
     path: path.join(__dirname, DIST),
     filename: 'bundle.js'
@@ -25,13 +25,13 @@ module.exports = {
         }
       },
       {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css-loader!sass-loader')
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('css-loader')
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin('public/style.css', {
+    new ExtractTextPlugin("style.css", {
       allChunks: true
     }),
     new HtmlWebpackPlugin({

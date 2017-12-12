@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import SearchResult from "./SearchResult"
 import Favorite from "./Favorite"
-import { includes, reject, isEqual, find } from "lodash"
+import { reject, isEqual, find } from "lodash"
+import "./styles/styles.css"
+
 
 export default class App extends Component {
 
@@ -77,10 +79,15 @@ export default class App extends Component {
       <div className="row">
         <div className="col">
           <form onSubmit={this.search}>
-            <input type="text" value={this.state.query} onChange={this.handleChange}/>
-            <input type="submit"/>
+            <div className="input-group">
+              <input type="text" className="form-control"
+                value={this.state.query}
+                onChange={this.handleChange}
+                />
+              <input type="submit" className="input-group-addon"/>
+            </div>
           </form>
-          <div data-test="results">
+          <div data-test="results" className="results">
             {this.state.searchMessage}
             {this.renderResults()}
           </div>

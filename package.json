@@ -1,7 +1,7 @@
 {
   "name": "ruby-gem-finder",
   "description": "Search for and favorite ruby gems",
-  "engines":{
+  "engines": {
     "node": "v8.9.0"
   },
   "repository": {
@@ -47,6 +47,9 @@
     "setupFiles": [
       "./raf-shim.js",
       "./enzymeConfiguration.js"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   }
 }
