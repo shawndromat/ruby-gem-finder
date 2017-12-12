@@ -5,12 +5,12 @@ import App from "../src/components/App"
 describe("App", () => {
   const searchMock = jest.fn()
   const fakeClient = {search: searchMock}
-  const localStorage = new FakeLocalStorage()
+  const storage = jest.fn()
 
   let app
 
   beforeEach(() => {
-    app = mount(<App client={fakeClient} storage={localStorage}/>)
+    app = mount(<App client={fakeClient} storage={storage}/>)
   })
 
   it("displays a welcome message", () => {
@@ -78,8 +78,8 @@ describe("App", () => {
 
     describe("when storage has favorites on initialize", () => {
       beforeEach(() => {
-        localStorage.setItem("favorites", JSON.stringify([rails, rspec]))
-        app = mount(<App client={fakeClient} storage={localStorage}/>)
+        storage.mockReturnValueOnce([rails, rspec])
+        app = mount(<App client={fakeClient} storage={storage}/>)
       })
 
       it("displays all favorites", () => {
@@ -90,6 +90,7 @@ describe("App", () => {
 
     describe("adding favorites", () => {
       beforeEach(() => {
+        storage.mockClear()
         app.instance().addFavorite(rails)
         app.instance().addFavorite(rspec)
       })
@@ -99,7 +100,7 @@ describe("App", () => {
       })
 
       it("puts all favorites into localStorage", () => {
-        expect(localStorage.getItem("favorites")).toEqual(JSON.stringify([rails, rspec]))
+        expect(storage).toHaveBeenCalledWith("favorites", [rails, rspec])
       })
 
       it("displays all favorites", () => {
@@ -109,6 +110,7 @@ describe("App", () => {
 
       describe("adding duplicate favorites", () => {
         beforeEach(() => {
+          storage.mockClear()
           app.instance().addFavorite(rails)
         })
 
@@ -117,12 +119,13 @@ describe("App", () => {
         })
 
         it("puts correct favorites into localStorage", () => {
-          expect(localStorage.getItem("favorites")).toEqual(JSON.stringify([rails, rspec]))
+          expect(storage).not.toHaveBeenCalled()
         })
       })
 
       describe("removing favorites", () => {
         beforeEach(() => {
+          storage.mockClear()
           app.instance().removeFavorite(rails)
         })
 
@@ -131,21 +134,11 @@ describe("App", () => {
         })
 
         it("puts all favorites into localStorage", () => {
-          expect(localStorage.getItem("favorites")).toEqual(JSON.stringify([rspec]))
+          expect(storage).toHaveBeenCalledWith("favorites", [rspec])
         })
       })
     })
   })
-
-  function FakeLocalStorage () {
-    const storage = {}
-
-    this.setItem = (key, value) => {
-      storage[key] = value.toString()
-    }
-
-    this.getItem = (key) => storage[key]
-  }
 
   function searchResults() {
     app.update()

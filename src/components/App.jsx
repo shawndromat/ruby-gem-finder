@@ -9,12 +9,12 @@ export default class App extends Component {
 
   constructor(props) {
     super(props)
-    const initialFavorites = props.storage.getItem("favorites")
+    const initialFavorites = props.storage("favorites")
 
     this.state = {
       query: "",
       searchResults: [],
-      favorites: initialFavorites ? JSON.parse(initialFavorites) : [],
+      favorites: initialFavorites || [],
       searchMessage: "Search for your favorite gem"
     }
   }
@@ -33,7 +33,7 @@ export default class App extends Component {
   }
 
   save = (favorites) => {
-    this.props.storage.setItem("favorites", JSON.stringify(favorites))
+    this.props.storage("favorites", favorites)
     this.setState({favorites})
   }
 
